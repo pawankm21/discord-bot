@@ -17,5 +17,7 @@ RESPONSES =[
 
 ]
 REMOVED='normie ban gaya'
-
-
+=======
+JOINED_MESSAGE="Chal jump kar"
+ON_READY ="Hello Antinormies"
+>>>>>>> fc81548761785e260c283564da3a31fb33f24d9a
