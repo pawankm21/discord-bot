@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 from utils import webc
 import bs4 as bs
 from time import time
+import json
+
+# from smalltalk import SmallTalk
 
 
 class Contest(object):
@@ -52,18 +55,12 @@ async def on_member_remove(member):
 async def ping(ctx):
     await ctx.send(f'Pichkari nikli {round(client.latency*1000)}ms mein')
 
-@client.command(aliases =['batao','bhaiyaji'])
-async def bata(ctx,*,question='nothing'):
 
-    if(question=='nothing'):
-        await ctx.send("Kya bataun?")
-    else:
-        await ctx.send(random.choice(RESPONSES))
 
 @client.command(aliases=['safai','hata'])
 async def clear(ctx, amount=5):
     if amount=='all':
-        await ctx.send('1000 messages kar raha hun ')
+        await ctx.send('1000 messages delete kar raha hun ')
         amount=1000
     await ctx.channel.purge(limit= amount)
 
@@ -105,6 +102,37 @@ async def code(ctx,site='none'):
         await ctx.send("sahi site daal- codeforces nahi to codechef")
 
 
+
+
+@client.command(aliases=['batao', 'bhaiyaji',])
+async def bata(ctx,* ,query=None):
+    if query==None:
+        await ctx.send("Kya bataun")
+    else:
+        await ctx.send(random.choice(RESPONSES))
+
+
+# @client.command(aliases=['angrezi','!'])
+# async def talk(ctx,*,query='helo'):
+#     if smalltalk.intent =='''"sentiment.curse"''':
+#         await ctx.send("MAA BAAP NE YAHI SIKHAYA HAI 😡")
+#     else :
+#         await ctx.send(smalltalk.talkback)
+#     print(smalltalk.response.text)
+
+@client.command(aliases=['tareef','insult','kundli'])
+async def compliment(ctx,*,query=None):
+    url = "https://evilinsult.com/generate_insult.php?lang=en&type=json"
+    r=requests.get(url)
+    insults_json=r.json()
+    print()
+
+    if query==None:
+        message = client.user.name + ', '+insults_json['insult']
+        await ctx.send(message)
+    else:
+        message=query+insults_json['insult']
+        await ctx.send(message)
 
 
 
