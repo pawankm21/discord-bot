@@ -1,4 +1,5 @@
 BOT_KEY = ""
+<<<<<<< HEAD
 # JOINED_MESSAGE="Chal jump kar"
 ON_READY ="Hello Antinormies"
 RESPONSES =[
@@ -16,3 +17,5 @@ RESPONSES =[
 
 ]
 REMOVED='normie ban gaya'
+
+
