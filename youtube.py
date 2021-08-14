@@ -1,7 +1,4 @@
 from youtubesearchpython import VideosSearch
-from pytube import YouTube
-
-
 def yts(srch, limit):
 
     videosSearch = VideosSearch(srch, limit=limit)
