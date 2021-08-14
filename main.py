@@ -3,12 +3,11 @@ import random
 import requests
 from discord.ext import commands
 from information import *
-from codeforces import contests_codeforces, contest_id
-from datetime import datetime, timedelta
-from utils import webc
-import bs4 as bs
-from time import time
+from codechef import *
 import json
+from webserver import keep_alive
+import os
+import youtube
 
 # from smalltalk import SmallTalk
 
@@ -33,17 +32,12 @@ class Contest(object):
         return hash(str(self))
 
 
-client = commands.Bot(command_prefix="!")
+client = commands.Bot(command_prefix="[")
 
 
 @client.event
 async def on_ready():
     print(ON_READY)
-
-
-# @client.event
-# async def on_message(message):
-#      await ctx.send(f'Mass!{round(client.latency*1000)}ms')
 
 
 @client.event
@@ -58,86 +52,44 @@ async def on_member_remove(member):
 
 @client.command()
 async def ping(ctx):
-    await ctx.send(f'Pichkari nikli {round(client.latency*1000)}ms mein')
+    await ctx.send(f' ping {round(client.latency*1000)}ms ')
 
 
-@client.command(aliases=['safai', 'hata'])
-async def clear(ctx, amount='5'):
+@client.command(aliases=['safai', 'hata', 'delit'])
+async def clear(ctx, amount='1'):
     if amount == 'all':
         amount = 1000
-    await ctx.send(f'{amount} messages delete kar raha hun ')
-    await ctx.channel.purge(limit=int(amount))
+    await ctx.send(f'{amount} deleted👌')
+    await ctx.channel.purge(limit=int(amount) + 2)
 
 
 #to view codeforces contests
-@client.command(aliases=['contests', 'comp'])
-async def code(ctx, site='none'):
-    if site == 'codeforces':
+@client.command(aliases=['contests', 'comp', 'cp'])
+async def code(ctx, site=None):
+    if site is None:
+      await ctx.send("please enter codeforces(cp) and codechef(cc)")
+    elif site == 'codeforces' or site == 'cf':
         await ctx.send("Here are upcoming contests on CodeForces:")
-        for name in contests_codeforces:
-            await ctx.send(name)
-            await ctx.send(f"https://codeforces.com/contest/{contest_id[0]}")
-    elif site == 'codechef':
-        contests = await webc.webget_text('https://www.codechef.com/contests/')
-        soup = bs.BeautifulSoup(contests, 'lxml')
-        for contest in soup.find_all('table',
-                                     attrs={'class': 'dataTable'
-                                            })[1].find('tbody').find_all('tr'):
-            details = contest.find_all('td')
-            if datetime.strptime(
-                    details[2].attrs['data-starttime'].split('+')[0] + '+' +
-                    details[2].attrs['data-starttime'].split('+')[1].replace(
-                        ':', ''), '%Y-%m-%dT%H:%M:%S%z').timestamp() >= time():
-                contest_data = {
-                    'title':
-                    ':trophy: %s' % details[1].find('a').contents[0],
-                    'description':
-                    'https://www.codechef.com/' + details[0].contents[0],
-                    'oj':
-                    'codechef',
-                    'Start Time':
-                    (details[2].attrs['data-starttime'].split('+')[0] + '+' +
-                     details[2].attrs['data-starttime'].split('+')[1].replace(
-                         ':', '')).replace('T', ' '),
-                    'End Time':
-                    (details[3].attrs['data-endtime'].split('+')[0] + '+' +
-                     details[3].attrs['data-endtime'].split('+')[1].replace(
-                         ':', '')).replace('T', ' ')
-                }
-                codechef_contest_titles = []
-                codechef_contests = []
-                if contest_data['title'] not in codechef_contest_titles:
-                    codechef_contest_titles.append(contest_data['title'])
-                    codechef_contests.append(Contest(contest_data))
-        codechef_contests = list(set(codechef_contests))
+        for contest in codeforces_contests:
+            if contest['phase'] == 'BEFORE':
+                await ctx.send(contest['name'])
+                await ctx.send(
+                    f"https://codeforces.com/contests/{contest['id']}")
 
-        await ctx.send(contest_data['title'])
-        await ctx.send(contest_data['description'])
-        await ctx.send(f"From: {contest_data['Start Time']}")
-        await ctx.send(f" To: {contest_data['End Time']}")
-
+    elif site == 'codechef' or 'cc':
+        contests = future_contests()
+        print(contests)
+        await ctx.send(contests)
     else:
-        await ctx.send("sahi site daal- codeforces nahi to codechef")
+        await ctx.send("kripiya sahi site daaliye- codeforces ya codechef")
 
 
-@client.command(aliases=[
-    'batao',
-    'bhaiyaji',
-])
+@client.command(aliases=['batao', 'bhaiyaji', 'tell'])
 async def bata(ctx, *, query=None):
     if query == None:
         await ctx.send("Kya bataun")
     else:
-        await ctx.send(random.choice(RESPONSES))
-
-
-# @client.command(aliases=['angrezi','!'])
-# async def talk(ctx,*,query='helo'):
-#     if smalltalk.intent =='''"sentiment.curse"''':
-#         await ctx.send("MAA BAAP NE YAHI SIKHAYA HAI 😡")
-#     else :
-#         await ctx.send(smalltalk.talkback)
-#     print(smalltalk.response.text)
+        await ctx.send(random.choice(QUESTIONS))
 
 
 @client.command(aliases=['tareef', 'insult', 'kundli'])
@@ -145,7 +97,6 @@ async def compliment(ctx, *, query=None):
     url = "https://evilinsult.com/generate_insult.php?lang=en&type=json"
     r = requests.get(url)
     insults_json = r.json()
-    print()
 
     if query == None:
         message = client.user.name + ', ' + insults_json['insult']
@@ -155,4 +106,32 @@ async def compliment(ctx, *, query=None):
         await ctx.send(message)
 
 
+@client.command(aliases=['kamedi', 'majak'])
+async def joke(ctx, query="Any"):
+    query.capitalize()
+    url = f"https://v2.jokeapi.dev/joke/Any?type=single"
+    r = requests.get(url)
+    joke_json = r.json()
+    message = joke_json["joke"]
+    await ctx.send(message)
+
+
+@client.command(aliases=['youtube', 'yt'])
+async def YT(ctx, query=None, limit=2):
+  if query is None:
+    url = youtube.yts("trending", limit=2)
+    await ctx.send(f"trending on youTube {url}")
+  else:
+    url = youtube.yts(query, limit)
+    await ctx.send(url)
+
+
+@client.command("test")
+async def test(ctx, term="this is a test"):
+    await ctx.send("this is reply 1")
+    # ctx.send("this is reply 2")
+
+
+keep_alive()
+BOT_KEY = os.environ.get('BOT_KEY')
 client.run(BOT_KEY)
