@@ -12,4 +12,10 @@ QUESTIONS = [
     "My reply is no.", "My sources say no.", "Outlook not so good.",
     "Very doubtful.",
 ]
+
+TRIGGERS={
+    "binarysearch":"https://binarysearch.com", "https://linkedIn.com":"", "ogcoder":"Naman", "cloud":"Abhijit","e-cell":"Divye","satyam":"Uncle","maggie":"Abhinav"
+}
+   
+
 REMOVED = 'normie ban gaya'

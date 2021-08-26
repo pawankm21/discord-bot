@@ -9,9 +9,7 @@ from jokes import jokes
 from youtube import yts
 from webserver import keep_alive
 
-
 client = commands.Bot(command_prefix="[")
-
 
 @client.event
 async def on_ready():
@@ -30,11 +28,16 @@ async def on_member_remove(member):
 
 @client.command()
 async def ping(ctx):
+    """ Check server ping in ms
+    """
     await ctx.send(f' ping {round(client.latency*1000)}ms ')
 
 
 @client.command(aliases=['safai', 'hata', 'delit'])
 async def clear(ctx, amount='1'):
+    """ Delete messages in bulk
+        amount: number of messages to be deleted- default value is 1
+    """
     if amount == 'all':
         amount = 1000
     await ctx.send(f'{amount} deleted👌')
@@ -43,6 +46,9 @@ async def clear(ctx, amount='1'):
 
 @client.command(aliases=['contests', 'comp', 'cp'])
 async def code(ctx, site=None):
+    """ Search for upcoming contests on codechef and codeforces
+        site: enter the name of site- cf, cc
+    """
     if site is None:
         await ctx.send("please enter codeforces(cp) and codechef(cc)")
     elif site == 'codeforces' or site == 'cf':
@@ -71,6 +77,8 @@ async def bata(ctx, *, query=None):
 
 @client.command(aliases=['tareef', 'insult', 'kundli'])
 async def compliment(ctx, *, query=None):
+    """ Search for an insult
+    """
     insults_json = insults()
     if query == None:
         message = client.user.name + ', ' + insults_json['insult']
@@ -82,23 +90,33 @@ async def compliment(ctx, *, query=None):
 
 @client.command(aliases=['kamedi', 'majak'])
 async def joke(ctx, query="Any"):
+    """ Search for a joke
+    """
     joke_json = jokes(query)
     message = joke_json["joke"]
     await ctx.send(message)
 
 
-@client.command(aliases=['youtube', 'yt'])
-async def YT(ctx, query=None, limit=2):
+@client.command(aliases=['yt', 'YouTube'])
+async def youtube(ctx, query=None, limit=2):
+    """Find videos on youtube
+    query: the term you want to search, use _underscore instead of spaces
+    limit: number of videos
+    """
+
     if query is None:
         url = yts("trending", limit=2)
         await ctx.send(f"trending on youTube {url}")
     else:
+        query.replace('_', ' ')
         url = yts(query, limit)
         await ctx.send(url)
 
 
 @client.command("test")
 async def test(ctx, term="this is a test"):
+    """This is a test command 
+    """
     await ctx.send("this is reply 1")
 
 
