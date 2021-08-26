@@ -9,7 +9,8 @@ from jokes import jokes
 from youtube import yts
 from webserver import keep_alive
 
-client = commands.Bot(command_prefix="[")
+client = commands.Bot(command_prefix="$")
+
 
 @client.event
 async def on_ready():
@@ -75,9 +76,9 @@ async def bata(ctx, *, query=None):
         await ctx.send(random.choice(QUESTIONS))
 
 
-@client.command(aliases=['tareef', 'insult', 'kundli'])
-async def compliment(ctx, *, query=None):
-    """ Search for an insult
+@client.command(aliases=['tareef', 'compliment', 'kundli'])
+async def insult(ctx, *, query=None):
+    """  Get a random insult
     """
     insults_json = insults()
     if query == None:
