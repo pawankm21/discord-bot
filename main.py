@@ -1,35 +1,13 @@
-import discord
-import random
-import requests
-from discord.ext import commands
-from information import *
-from codechef import *
-import json
-from webserver import keep_alive
 import os
-import youtube
-
-# from smalltalk import SmallTalk
-
-
-class Contest(object):
-    def __init__(self, data):
-        self.data = data
-
-    def asdict(self):
-        return self.data
-
-    def __eq__(self, other):
-        return self.data['description'] == other.data['description']
-
-    def __gt__(self, other):
-        return self.data['description'] > other.data['description']
-
-    def __str__(self):
-        return self.data['description']
-
-    def __hash__(self):
-        return hash(str(self))
+import discord
+from discord.ext import commands
+import random
+from information import *
+from code import future_contests, codeforces_contests
+from insults import insults
+from jokes import jokes
+from youtube import yts
+from webserver import keep_alive
 
 
 client = commands.Bot(command_prefix="[")
@@ -63,11 +41,10 @@ async def clear(ctx, amount='1'):
     await ctx.channel.purge(limit=int(amount) + 2)
 
 
-#to view codeforces contests
 @client.command(aliases=['contests', 'comp', 'cp'])
 async def code(ctx, site=None):
     if site is None:
-      await ctx.send("please enter codeforces(cp) and codechef(cc)")
+        await ctx.send("please enter codeforces(cp) and codechef(cc)")
     elif site == 'codeforces' or site == 'cf':
         await ctx.send("Here are upcoming contests on CodeForces:")
         for contest in codeforces_contests:
@@ -94,10 +71,7 @@ async def bata(ctx, *, query=None):
 
 @client.command(aliases=['tareef', 'insult', 'kundli'])
 async def compliment(ctx, *, query=None):
-    url = "https://evilinsult.com/generate_insult.php?lang=en&type=json"
-    r = requests.get(url)
-    insults_json = r.json()
-
+    insults_json = insults()
     if query == None:
         message = client.user.name + ', ' + insults_json['insult']
         await ctx.send(message)
@@ -108,28 +82,24 @@ async def compliment(ctx, *, query=None):
 
 @client.command(aliases=['kamedi', 'majak'])
 async def joke(ctx, query="Any"):
-    query.capitalize()
-    url = f"https://v2.jokeapi.dev/joke/Any?type=single"
-    r = requests.get(url)
-    joke_json = r.json()
+    joke_json = jokes(query)
     message = joke_json["joke"]
     await ctx.send(message)
 
 
 @client.command(aliases=['youtube', 'yt'])
 async def YT(ctx, query=None, limit=2):
-  if query is None:
-    url = youtube.yts("trending", limit=2)
-    await ctx.send(f"trending on youTube {url}")
-  else:
-    url = youtube.yts(query, limit)
-    await ctx.send(url)
+    if query is None:
+        url = yts("trending", limit=2)
+        await ctx.send(f"trending on youTube {url}")
+    else:
+        url = yts(query, limit)
+        await ctx.send(url)
 
 
 @client.command("test")
 async def test(ctx, term="this is a test"):
     await ctx.send("this is reply 1")
-    # ctx.send("this is reply 2")
 
 
 keep_alive()
