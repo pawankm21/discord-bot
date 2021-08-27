@@ -8,8 +8,8 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-my_secret = "aiswarika21"
-username = "pawan994567@gmail.com"
+my_secret = ""
+username = ""
 
 driver = webdriver.Edge("E:\msedgedriver.exe")
 action = ActionChains(driver)
