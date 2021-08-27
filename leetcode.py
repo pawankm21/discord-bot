@@ -19,13 +19,14 @@ class Leetcode:
 
     def getByName(self,name,maxoutput=1):
         list_of_questions=[]
+        name.replace('-',' ')
         for question in self.questions:
             if name in question['stat']['question__title']:
                 list_of_questions.append(
-                    f"https://leetcode.com/problems/question['stat']['question__title_slug']")
+                    f"https://leetcode.com/problems/{question['stat']['question__title_slug']}")
         return list_of_questions[:maxoutput]
 
 
 
-
-
+v=Leetcode()
+print(v.getByName('BST'))

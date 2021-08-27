@@ -11,7 +11,7 @@ from youtube import yts
 from webserver import keep_alive
 
 
-leetcode_object = Leetcode()
+lc_obj = Leetcode()
 client = commands.Bot(command_prefix="[")
 
 
@@ -72,18 +72,23 @@ async def code(ctx, site=None):
     else:
         await ctx.send("kripiya sahi site daaliye- codeforces ya codechef")
 
-@client.command(aliases=['lc','questions'])
+
+@client.command(aliases=['lc', 'questions'])
 async def leetcode(ctx, query=None, limit=1):
     """ Get a random leetcode question
-    queries: name or topic you want to search
+    queries: name of the question you want to search
     limit: number of questions you want
     aliases: lc, questions
     """
     if query is None:
-        await ctx.send(leetcode_object.randomQuestion())
+        await ctx.send(lc_obj.randomQuestion())
     else:
-        await ctx.send(leetcode_object.getByName(query,limit))
-
+        questions = lc_obj.getByName(query, limit)
+        questionstring = ' '.join(questions)
+        if questionstring == "":
+          await ctx.send("No questions found")
+        else:
+          await ctx.send(questionstring)
 
 
 @client.command(aliases=['batao', 'bhaiyaji', 'tell'])
@@ -124,7 +129,7 @@ async def joke(ctx, query="Any"):
 @client.command(aliases=['yt', 'YouTube'])
 async def youtube(ctx, query=None, limit=2):
     """Find videos on youtube
-    query: the term you want to search, use _underscore instead of spaces
+    query: the term you want to search, use -underscore instead of spaces
     limit: number of videos
     aliases: yt, YouTube
     """
@@ -133,9 +138,10 @@ async def youtube(ctx, query=None, limit=2):
         url = yts("trending", limit=2)
         await ctx.send(f"trending on youTube {url}")
     else:
-        query.replace('_', ' ')
+        query.replace('-', ' ')
         url = yts(query, limit)
-        await ctx.send(url)
+        urlstring = ' '.join(url)
+        await ctx.send(urlstring)
 
 
 @client.command("test")
