@@ -4,12 +4,14 @@ from discord.ext import commands
 import random
 from information import *
 from code import future_contests, codeforces_contests
-from leetcode import randomQuestion
+from leetcode import Leetcode
 from insults import insults
 from jokes import jokes
 from youtube import yts
 from webserver import keep_alive
 
+
+leetcode_object = Leetcode()
 client = commands.Bot(command_prefix="[")
 
 
@@ -71,11 +73,18 @@ async def code(ctx, site=None):
         await ctx.send("kripiya sahi site daaliye- codeforces ya codechef")
 
 @client.command(aliases=['lc','questions'])
-async def leetcode(ctx):
+async def leetcode(ctx, query=None, limit=1):
     """ Get a random leetcode question
+    queries: name or topic you want to search
+    limit: number of questions you want
     aliases: lc, questions
     """
-    await ctx.send(randomQuestion())
+    if query is None:
+        await ctx.send(leetcode_object.randomQuestion())
+    else:
+        await ctx.send(leetcode_object.getByName(query,limit))
+
+
 
 @client.command(aliases=['batao', 'bhaiyaji', 'tell'])
 async def bata(ctx, *, query=None):
