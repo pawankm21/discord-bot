@@ -32,6 +32,7 @@ This bot can-
 * Get questions from leetcode
 * Tell jokes
 * You can insult someone using the bot.
+* Save and get dialogues
 
 
 
