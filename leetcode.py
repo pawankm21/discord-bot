@@ -15,7 +15,7 @@ def randomQuestion():
 
     x = random.randint(0, len(problems)-1)
 
-    return f"https://leetcode.com/problems/{problems[x]['question__title_slug'}"
+    return f"https://leetcode.com/problems/{problems[x]['question__title_slug']}"
 
 
 

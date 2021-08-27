@@ -75,7 +75,7 @@ async def leetcode(ctx):
     """ Get a random leetcode question
     aliases: lc, questions
     """
-    return randomQuestion()
+    await ctx.send(randomQuestion())
 
 @client.command(aliases=['batao', 'bhaiyaji', 'tell'])
 async def bata(ctx, *, query=None):
