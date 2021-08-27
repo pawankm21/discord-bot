@@ -21,5 +21,5 @@ def read_json(key,filename="information.json"):
     return temp
 
 
-# append_json("DIALOGUES","chup ho ja surya","information.json")
-# print(read_json("DIALOGUES","information.json"))
+append_json("DIALOGUES","chup ho ja surya","information.json")
+print(read_json("DIALOGUES","information.json"))

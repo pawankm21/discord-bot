@@ -93,14 +93,14 @@ async def leetcode(ctx, query=None, limit=1):
           await ctx.send(questionstring)
 
 
-@client.command(aliases=['batao', 'bhaiyaji', 'tell'])
-async def bata(ctx, *, query=None):
+@client.command(aliases=['where', 'what'])
+async def who(ctx, *, query=None):
     """Random talks
-    aliases: batao, bhaiyaji, tell
+    aliases: where, what
     """
     QUESTIONS = read_json("QUESTIONS", filename)
     if query == None:
-        await ctx.send("Kya bataun")
+        await ctx.send("don't disturb")
     else:
         await ctx.send(random.choice(QUESTIONS))
 
@@ -147,9 +147,11 @@ async def youtube(ctx, query=None, limit=2):
         await ctx.send(urlstring)
 
 
-@client.command()
+@client.command(aliases=['save', 'put'])
 async def setDialogue(ctx, term=None, *args):
-
+  """Saves a dialogue
+  aliases: save, put
+  """
   if term is not None:
     dialogue = term+' '+' '.join(args)
     append_json("DIALOGUES", dialogue, filename)
@@ -158,8 +160,11 @@ async def setDialogue(ctx, term=None, *args):
     await ctx.send("Please provide a dialogue")
 
 
-@client.command()
+@client.command(aliases=['say', 'tell'])
 async def getDialogue(ctx):
+    """ Tells a saved dialogue
+    aliases: say, tell
+    """
     DIALOGUES = read_json("DIALOGUES", filename)
     index = random.randint(0, len(DIALOGUES)-1)
     await ctx.send(DIALOGUES[index])
