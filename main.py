@@ -10,7 +10,7 @@ from jokes import jokes
 from youtube import yts
 from webserver import keep_alive
 
-client = commands.Bot(command_prefix="$")
+client = commands.Bot(command_prefix="[")
 
 
 @client.event
