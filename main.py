@@ -4,6 +4,7 @@ from discord.ext import commands
 import random
 from information import *
 from code import future_contests, codeforces_contests
+from leetcode import randomQuestion
 from insults import insults
 from jokes import jokes
 from youtube import yts
@@ -38,6 +39,7 @@ async def ping(ctx):
 async def clear(ctx, amount='1'):
     """ Delete messages in bulk
         amount: number of messages to be deleted- default value is 1
+        aliases: safai, hata, delit
     """
     if amount == 'all':
         amount = 1000
@@ -48,7 +50,8 @@ async def clear(ctx, amount='1'):
 @client.command(aliases=['contests', 'comp', 'cp'])
 async def code(ctx, site=None):
     """ Search for upcoming contests on codechef and codeforces
-        site: enter the name of site- cf, cc
+        site: enter the name of site (cf or codeforces,cc or codechef)
+        aliases: contests, comp, cp
     """
     if site is None:
         await ctx.send("please enter codeforces(cp) and codechef(cc)")
@@ -67,9 +70,18 @@ async def code(ctx, site=None):
     else:
         await ctx.send("kripiya sahi site daaliye- codeforces ya codechef")
 
+@client.command(aliases=['lc','questions'])
+async def leetcode(ctx):
+    """ Get a random leetcode question
+    aliases: lc, questions
+    """
+    return randomQuestion()
 
 @client.command(aliases=['batao', 'bhaiyaji', 'tell'])
 async def bata(ctx, *, query=None):
+    """Random talks
+    aliases: batao, bhaiyaji, tell
+    """
     if query == None:
         await ctx.send("Kya bataun")
     else:
@@ -79,6 +91,7 @@ async def bata(ctx, *, query=None):
 @client.command(aliases=['tareef', 'compliment', 'kundli'])
 async def insult(ctx, *, query=None):
     """  Get a random insult
+    aliases: tareef, compliment, kundli
     """
     insults_json = insults()
     if query == None:
@@ -92,6 +105,7 @@ async def insult(ctx, *, query=None):
 @client.command(aliases=['kamedi', 'majak'])
 async def joke(ctx, query="Any"):
     """ Search for a joke
+    aliases: kamedi, majak
     """
     joke_json = jokes(query)
     message = joke_json["joke"]
@@ -103,6 +117,7 @@ async def youtube(ctx, query=None, limit=2):
     """Find videos on youtube
     query: the term you want to search, use _underscore instead of spaces
     limit: number of videos
+    aliases: yt, YouTube
     """
 
     if query is None:
