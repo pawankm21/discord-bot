@@ -1,8 +1,9 @@
+
 import os
 import discord
 from discord.ext import commands
 import random
-from information import *
+from read import read_json, write_json, append_json
 from code import future_contests, codeforces_contests
 from leetcode import Leetcode
 from insults import insults
@@ -10,14 +11,14 @@ from jokes import jokes
 from youtube import yts
 from webserver import keep_alive
 
-
+filename = "information.json"
 lc_obj = Leetcode()
 client = commands.Bot(command_prefix="[")
 
 
 @client.event
 async def on_ready():
-    print(ON_READY)
+    print("READY")
 
 
 @client.event
@@ -27,6 +28,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_member_remove(member):
+    REMOVED = read_json("REMOVED", filename)
     print(member, REMOVED)
 
 
@@ -96,6 +98,7 @@ async def bata(ctx, *, query=None):
     """Random talks
     aliases: batao, bhaiyaji, tell
     """
+    QUESTIONS = read_json("QUESTIONS", filename)
     if query == None:
         await ctx.send("Kya bataun")
     else:
@@ -144,6 +147,24 @@ async def youtube(ctx, query=None, limit=2):
         await ctx.send(urlstring)
 
 
+@client.command()
+async def setDialogue(ctx, term=None, *args):
+
+  if term is not None:
+    dialogue = term+' '+' '.join(args)
+    append_json("DIALOGUES", dialogue, filename)
+    await ctx.send("Successfully added")
+  else:
+    await ctx.send("Please provide a dialogue")
+
+
+@client.command()
+async def getDialogue(ctx):
+    DIALOGUES = read_json("DIALOGUES", filename)
+    index = random.randint(0, len(DIALOGUES)-1)
+    await ctx.send(DIALOGUES[index])
+
+
 @client.command("test")
 async def test(ctx, term="this is a test"):
     """This is a test command 
@@ -154,3 +175,4 @@ async def test(ctx, term="this is a test"):
 keep_alive()
 BOT_KEY = os.environ.get('BOT_KEY')
 client.run(BOT_KEY)
+random.ran

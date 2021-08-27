@@ -19,11 +19,13 @@ class Leetcode:
 
     def getByName(self,name,maxoutput=1):
         list_of_questions=[]
-        name.replace('-',' ')
+        terms=list(name.split('-'))
         for question in self.questions:
-            if name in question['stat']['question__title']:
-                list_of_questions.append(
-                    f"https://leetcode.com/problems/{question['stat']['question__title_slug']}")
+            for term in terms:
+                if term in question['stat']['question__title']:
+                    list_of_questions.append(
+                        f"https://leetcode.com/problems/{question['stat']['question__title_slug']}")
+            random.shuffle(list_of_questions)
         return list_of_questions[:maxoutput]
 
 
