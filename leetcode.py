@@ -21,7 +21,8 @@ class Leetcode:
         list_of_questions=[]
         for question in self.questions:
             if name in question['stat']['question__title']:
-                list_of_questions.append(question['stat']['question__title_slug'])
+                list_of_questions.append(
+                    f"https://leetcode.com/problems/question['stat']['question__title_slug']")
         return list_of_questions[:maxoutput]
 
 
