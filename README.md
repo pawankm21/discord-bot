@@ -29,8 +29,10 @@ This bot can-
 * Delete messages in bulk
 * Search for youtube videos
 * Give CodeForces and Codechef contest information
+* Get questions from leetcode
 * Tell jokes
 * You can insult someone using the bot.
+
 
 
 ## [Fork this project here to start using the bot right now](https://replit.com/@pawankm21)
