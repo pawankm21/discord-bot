@@ -8,14 +8,15 @@
 
 ## Requirements 
 Tools and packages required to successfully install this project.
-* [discord.py 1.7.3]()
-* [youtube-search-python 1.4.6]()
-* [CodeforcesApiPy 2.0.8]()
+* [discord.py 1.7.3](https://pypi.org/project/discord.py/)
+* [youtube-search-python 1.4.6](https://github.com/alexmercerind/youtube-search-python)
+* [CodeforcesApiPy 2.0.8](https://github.com/soon/CodeforcesAPI)
 * [google-api-python-client 2.15.0]()
-* [pytube 11.0.0]()
+* [pytube 11.0.0](https://pytube.io/en/latest/)
 * [google-auth-oauthlib 0.4.5]()
-* [beautifulsoup4 4.9.3]()
-* [Flask 2.0.1]()
+* [beautifulsoup4 4.9.3](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+* [Flask 2.0.1](https://flask.palletsprojects.com/en/2.0.x/)
+* [selenium](https://selenium-python.readthedocs.io/)
 
 
  <a href="url"><img src="images\Screenshot 2021-08-14 152605.png"> </a>
@@ -32,6 +33,7 @@ This bot can-
 * Get questions from leetcode
 * Tell jokes
 * You can insult someone using the bot.
+* Save and get dialogues
 
 
 
