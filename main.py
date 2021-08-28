@@ -9,6 +9,7 @@ from leetcode import Leetcode
 from insults import insults
 from jokes import jokes
 from youtube import yts
+from automate import createRoom
 from webserver import keep_alive
 
 filename = "information.json"
@@ -91,6 +92,14 @@ async def leetcode(ctx, query=None, limit=1):
           await ctx.send("No questions found")
         else:
           await ctx.send(questionstring)
+
+@client.command(aliases=['bs','room'])
+async def createroom(ctx):
+    """Creates a room at binarysearch.com
+    aliases: bs, room
+    """
+    url=createRoom()
+    await ctx.send(url)
 
 
 @client.command(aliases=['where', 'what'])
