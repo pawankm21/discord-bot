@@ -189,4 +189,4 @@ async def test(ctx, term="this is a test"):
 # keep_alive()
 BOT_KEY = os.environ.get('BOT_KEY')
 client.run(BOT_KEY)
-random.ran
+
