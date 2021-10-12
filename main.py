@@ -1,5 +1,5 @@
 
-import os
+from os import environ
 import discord
 from discord.ext import commands
 import random
@@ -11,7 +11,11 @@ from jokes import jokes
 from youtube import yts
 from automate import createRoom
 from webserver import keep_alive
+from dotenv import load_dotenv
 
+load_dotenv()
+intents = discord.Intents.all()
+discord.member = True
 filename = "information.json"
 lc_obj = Leetcode()
 client = commands.Bot(command_prefix="[")
@@ -23,21 +27,40 @@ async def on_ready():
 
 
 @client.event
+async def on_ready():
+    """
+    prints READY on ready
+    """
+    print("READY")
+
+
+@client.event
 async def on_member_join(member):
-    print(f"Chal {member} jump kar")
+    channel = client.get_channel(int(environ.get("WELCOME")))
+    await channel.send(f"{member} Welcome my friend😀")
+
+
+@client.event
+async def on_message(message):
+    """
+    Event triggered on message
+    """
+    QUESTIONS = read_json("QUESTIONS", filename)
+    if(message.author == client.user):
+        return
+    if client.user in message.mentions:
+        await client.get_channel(message.channel.id).send(random.choice(QUESTIONS)+"🤖")
+    await client.process_commands(message)
 
 
 @client.event
 async def on_member_remove(member):
-    REMOVED = read_json("REMOVED", filename)
-    print(member, REMOVED)
-
-
-@client.command()
-async def ping(ctx):
-    """ Check server ping in ms
     """
-    await ctx.send(f' ping {round(client.latency*1000)}ms ')
+    Event triggered when member is removed
+    """
+    channel = client.get_channel(int(environ.get("WELCOME")))
+    await channel.send(f"{member} left the server.😔")
+
 
 
 @client.command(aliases=['safai', 'hata', 'delit'])
@@ -102,16 +125,6 @@ async def createroom(ctx):
     await ctx.send(url)
 
 
-@client.command(aliases=['where', 'what'])
-async def who(ctx, *, query=None):
-    """Random talks
-    aliases: where, what
-    """
-    QUESTIONS = read_json("QUESTIONS", filename)
-    if query == None:
-        await ctx.send("don't disturb")
-    else:
-        await ctx.send(random.choice(QUESTIONS))
 
 
 @client.command(aliases=['tareef', 'compliment', 'kundli'])
@@ -128,10 +141,10 @@ async def insult(ctx, *, query=None):
         await ctx.send(message)
 
 
-@client.command(aliases=['kamedi', 'majak'])
+@client.command()
 async def joke(ctx, query="Any"):
     """ Search for a joke
-    aliases: kamedi, majak
+    query: Programming/Misc/Dark/Pun/Spooky/Christmas
     """
     joke_json = jokes(query)
     message = joke_json["joke"]
@@ -186,7 +199,49 @@ async def test(ctx, term="this is a test"):
     await ctx.send("this is reply 1")
 
 
-keep_alive()
-BOT_KEY = os.environ.get('BOT_KEY')
+@commands.has_permissions(kick_members=True)
+@client.command()
+async def kick(ctx, user: discord.Member, *, reason=None):
+    """
+        kicks user
+        user: Mention user
+    """
+    await user.kick(reason=reason)
+    await ctx.send(f'User {user} has kicked.')
+
+
+@commands.has_permissions(ban_members=True)
+@client.command()
+async def ban(ctx, user: discord.Member, *, reason="bad behaviour"):
+    """
+    bans user
+    user: Mention user
+    """
+    await user.ban(reason=reason)
+    ban = discord.Embed(
+        title=f":boom: Banned {user.name}!", description=f"Reason: {reason}\nBy: {ctx.author.mention}")
+    await ctx.message.delete()
+    await ctx.channel.send(embed=ban)
+    await user.send(embed=ban)
+
+
+@client.command()
+async def unban(ctx, *, member):
+    """
+    unbans user
+    user: Mention user
+    """
+    banned_users = await ctx.guild.bans()
+    member_name, member_discriminator = member.split('#')
+    for ban_entry in banned_users:
+        user = ban_entry.user
+
+        if (user.name, user.discriminator) == (member_name, member_discriminator):
+            await ctx.guild.unban(user)
+            await ctx.send(f'Unbanned {user.mention}')
+
+
+
+BOT_KEY = environ.get('BOT_KEY')
 client.run(BOT_KEY)
-random.ran
+
