@@ -186,7 +186,7 @@ async def test(ctx, term="this is a test"):
     await ctx.send("this is reply 1")
 
 
-keep_alive()
+# keep_alive()
 BOT_KEY = os.environ.get('BOT_KEY')
 client.run(BOT_KEY)
 random.ran
