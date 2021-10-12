@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 import random
 from read import read_json, write_json, append_json
-from code import future_contests, codeforces_contests
+# from code import future_contests, codeforces_contests
 from leetcode import Leetcode
 from insults import insults
 from jokes import jokes
@@ -75,28 +75,28 @@ async def clear(ctx, amount='1'):
     await ctx.channel.purge(limit=int(amount) + 2)
 
 
-@client.command(aliases=['contests', 'comp', 'cp'])
-async def code(ctx, site=None):
-    """ Search for upcoming contests on codechef and codeforces
-        site: enter the name of site (cf or codeforces,cc or codechef)
-        aliases: contests, comp, cp
-    """
-    if site is None:
-        await ctx.send("please enter codeforces(cp) and codechef(cc)")
-    elif site == 'codeforces' or site == 'cf':
-        await ctx.send("Here are upcoming contests on CodeForces:")
-        for contest in codeforces_contests:
-            if contest['phase'] == 'BEFORE':
-                await ctx.send(contest['name'])
-                await ctx.send(
-                    f"https://codeforces.com/contests/{contest['id']}")
+# @client.command(aliases=['contests', 'comp', 'cp'])
+# async def code(ctx, site=None):
+#     """ Search for upcoming contests on codechef and codeforces
+#         site: enter the name of site (cf or codeforces,cc or codechef)
+#         aliases: contests, comp, cp
+#     """
+#     if site is None:
+#         await ctx.send("please enter codeforces(cp) and codechef(cc)")
+#     elif site == 'codeforces' or site == 'cf':
+#         await ctx.send("Here are upcoming contests on CodeForces:")
+#         for contest in codeforces_contests:
+#             if contest['phase'] == 'BEFORE':
+#                 await ctx.send(contest['name'])
+#                 await ctx.send(
+#                     f"https://codeforces.com/contests/{contest['id']}")
 
-    elif site == 'codechef' or 'cc':
-        contests = future_contests()
-        print(contests)
-        await ctx.send(contests)
-    else:
-        await ctx.send("kripiya sahi site daaliye- codeforces ya codechef")
+#     elif site == 'codechef' or 'cc':
+#         contests = future_contests()
+#         print(contests)
+#         await ctx.send(contests)
+#     else:
+#         await ctx.send("kripiya sahi site daaliye- codeforces ya codechef")
 
 
 @client.command(aliases=['lc', 'questions'])
